@@ -12,6 +12,8 @@ class SessionsController < ApplicationController
 
       log_in(user)
 
+      params[:session][:remember_me] == '1' ? remember(user) : forget(user)
+
       redirect_to user
 
     else
@@ -26,7 +28,7 @@ class SessionsController < ApplicationController
 
   def destroy
 
-    log_out
+    log_out if logged_in?
 
     redirect_to root_url
 
