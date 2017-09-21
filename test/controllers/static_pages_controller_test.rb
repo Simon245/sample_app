@@ -4,6 +4,7 @@ class StaticPagesControllerTest < ActionDispatch::IntegrationTest
 
   def setup
     @base_title = 'Ruby on Rails Tutorial Sample App'
+    @user = users(:michael)
   end
 
   test 'should get home' do
@@ -29,5 +30,30 @@ class StaticPagesControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_select 'title', "Contact | #{@base_title}"
   end
+
+  test 'should get users' do
+    log_in_as(@user)
+    assert is_logged_in?
+    get users_path
+    assert_response :success
+    assert_select 'title', "All users | #{@base_title}"
+  end
+
+  test 'should get settings' do
+    log_in_as(@user)
+    assert is_logged_in?
+    get user_path(@user)
+    assert_response :success
+    assert_select 'title', "#{@user.name} | #{@base_title}"
+  end
+
+  test 'should get edit profile' do
+    log_in_as(@user)
+    assert is_logged_in?
+    get edit_user_path(@user)
+    assert_response :success
+    assert_select 'title', "Edit user | #{@base_title}"
+  end
+
 
 end
